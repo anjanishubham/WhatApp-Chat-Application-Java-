@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.GroupChatActivity">
+
+
+    <include
+        android:id="@+id/group_chat_toolbar"
+        layout="@layout/app_bar_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+    </include>
+
+
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    app:layout_constraintTop_toBottomOf="@+id/group_chat_toolbar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toBottomOf="@+id/et_massage"
+    android:layout_marginBottom="80dp">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_chat_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        />
+</androidx.core.widget.NestedScrollView>
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_massage"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:hint="message ..."
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_Send_message"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_Send_message"
+        android:layout_width="wrap_content"
+        android:background="@color/colorAccent"
+        android:layout_height="54dp"
+        android:visibility="gone"
+        android:src="@drawable/send_message"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_massage">
+
+    </androidx.appcompat.widget.AppCompatImageButton>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "911734577321",
+    "firebase_url": "https://whatapp-35e70.firebaseio.com",
+    "project_id": "whatapp-35e70",
+    "storage_bucket": "whatapp-35e70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911734577321:android:93fa02375caeb18c",
+        "android_client_info": {
+          "package_name": "com.lovelycoding.whatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911734577321-rq5i57nj52kvd1kqdck8bdkde53turt5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lovelycoding.whatapp",
+            "certificate_hash": "ad06cdd27fa497d5c9fa1fc66999b32e151188f6"
+          }
+        },
+        {
+          "client_id": "911734577321-iadjkr9dq4k0l1101gb3cb81vq9tqllg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOxXX0VHoAaP5MJpH5Cz9OU3NLdfBaoZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "911734577321-iadjkr9dq4k0l1101gb3cb81vq9tqllg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
