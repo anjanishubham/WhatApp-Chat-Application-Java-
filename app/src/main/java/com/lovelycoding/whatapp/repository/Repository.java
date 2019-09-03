@@ -11,20 +11,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.lovelycoding.whatapp.model.Contact;
 import com.lovelycoding.whatapp.model.GroupChatModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class Repository  {
     public static Repository mRepository;
     private static final String TAG = "Repository";
     private MutableLiveData<List<String>> mGroupList = new MutableLiveData<>();
     private MutableLiveData<List<GroupChatModel>> groupMassageList = new MutableLiveData<>();
-    private DatabaseReference rootRef;
-    private DatabaseReference mRef;
+    private MutableLiveData<List<Contact>> userListLiveData =new MutableLiveData<>();
+    private DatabaseReference groupRef;
+    private DatabaseReference groupChatRef;
 
     public static Repository getRepositoryInstance() {
         if (mRepository == null) {
@@ -33,10 +37,10 @@ public class Repository  {
         return mRepository;
     }
     public MutableLiveData<List<String>> getGroupList() {
-        rootRef= FirebaseDatabase.getInstance().getReference().child("Groups");
+        groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
 
         try {
-            rootRef.addValueEventListener(new ValueEventListener() {
+            groupRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     List<String> list = new ArrayList<>();
@@ -62,13 +66,63 @@ public class Repository  {
         return mGroupList;
     }
 
-    public void setDatabaseRefrence(DatabaseReference dref){
-        this.mRef=dref;
+    public void setDatabaseReference(DatabaseReference groupChatRef){
+        this.groupChatRef =groupChatRef;
     }
+
+
+    public MutableLiveData<List<Contact>> getUserList(DatabaseReference mDatabaseRef) {
+
+
+        final List<Contact> mList = new ArrayList<>();
+        Query query=mDatabaseRef;
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot d:dataSnapshot.getChildren())
+                {
+                   Iterator<DataSnapshot> iterator= d.getChildren().iterator();
+
+                   Contact contact=new Contact();
+                   while (iterator.hasNext())
+                   {
+                       DataSnapshot dataSnapshot1=iterator.next();
+
+                       if("image".equals(dataSnapshot1.getKey().trim()))
+                       {
+                           contact.setUserProfileUrl(dataSnapshot1.getValue().toString());
+                       }
+                       else if("name".equals(dataSnapshot1.getKey().trim()))
+                       {
+                           contact.setUserName(dataSnapshot1.getValue().toString());
+                       }
+                       else if("status".equals(dataSnapshot1.getKey().trim()))
+                       {
+                           contact.setUserStatus(dataSnapshot1.getValue().toString());
+                       }
+                   }
+
+                    Log.d(TAG, "onDataChange: "+contact.toString());
+                   mList.add(contact);
+
+                }
+                userListLiveData.setValue(mList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return userListLiveData;
+    }
+
+
+
     public MutableLiveData<List<GroupChatModel>> getGroupMessageList()
     {
         List<GroupChatModel> list = new ArrayList<>();
-        mRef.addChildEventListener(new ChildEventListener() {
+        groupChatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 getGroupList(dataSnapshot);
@@ -99,6 +153,7 @@ public class Repository  {
 
         return groupMassageList;
     }
+
 
     private void getGroupList(DataSnapshot dataSnapshot) {
         List<GroupChatModel> list = new ArrayList();

@@ -11,15 +11,12 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ScrollView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lovelycoding.whatapp.R;
 import com.lovelycoding.whatapp.adapter.chat.MassageListAdapter;
-import com.lovelycoding.whatapp.adapter.groupchatlist.GroupChatAdapter;
 import com.lovelycoding.whatapp.model.GroupChatModel;
 import com.lovelycoding.whatapp.repository.Repository;
 
@@ -100,7 +96,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         getUserInfo();
         btGroupChatSend.setOnClickListener(this);
         mRepository=new Repository();
-        mRepository.setDatabaseRefrence(groupNameRef);
+        mRepository.setDatabaseReference(groupNameRef);
         initObserver();
         intiRecycleView();
 

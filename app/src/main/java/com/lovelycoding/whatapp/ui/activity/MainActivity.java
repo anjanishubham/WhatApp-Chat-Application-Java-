@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                      return true;}
 
             case R.id.main_find_firend_option:{
+                sentToFindContact();
                 return true;
             }
             case R.id.main_new_group_option:
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
     }
+
 
     private void sentUserToCreateNewGroup() {
         final AlertDialog.Builder mBuilder = new AlertDialog.Builder(this,R.style.AlertDialog);
@@ -200,4 +202,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+    private void sentToFindContact() {
+        Intent intent=new Intent(this,FindFriendActivity.class);
+        startActivity(intent);
+    }
+
 }
