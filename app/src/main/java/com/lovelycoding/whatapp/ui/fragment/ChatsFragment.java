@@ -156,7 +156,7 @@ public class ChatsFragment extends Fragment {
         CardView cardView;
         private CircleImageView civProfileImage;
         TextView tvUsername,tvUserStatus;
-        public ChatViewHolder(@NonNull View itemView) {
+        public ChatViewHolder(@NonNull View itemView){
             super(itemView);
 
             civProfileImage=itemView.findViewById(R.id.user_request_civ);
