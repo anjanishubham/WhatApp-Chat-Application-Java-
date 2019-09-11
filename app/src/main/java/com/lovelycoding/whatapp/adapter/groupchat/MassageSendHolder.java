@@ -1,4 +1,4 @@
-package com.lovelycoding.whatapp.adapter.chat;
+package com.lovelycoding.whatapp.adapter.groupchat;
 
 import android.view.View;
 import android.widget.TextView;

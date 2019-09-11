@@ -42,10 +42,9 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
         public void someEvent(String s);
     }
 
-    CircleImageView camera,gallery;
+    CircleImageView camera, gallery;
     TextView cancel;
     onSomeEventListener someEventListener;
-
 
 
     @Override
@@ -77,10 +76,25 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == RunTimePermission.REQUEST_CODE) {
+
+            if (RunTimePermission.mPermission) {
+                Log.d(TAG, "onRequestPermissionsResult: called testing ");
+            } else {
+                Log.d(TAG, "onRequestPermissionsResult: " + "result" + grantResults.length);
+                //  RunTimePermission.cameraPermission(this);
+            }
+        }
+    }
+
     private void initView(View view) {
-        camera=view.findViewById(R.id.camera);
-        gallery=view.findViewById(R.id.galley);
-        cancel=view.findViewById(R.id.cancel);
+        camera = view.findViewById(R.id.camera);
+        gallery = view.findViewById(R.id.galley);
+        cancel = view.findViewById(R.id.cancel);
 
     }
 
@@ -88,7 +102,7 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
     public void onResume() {
 
         super.onResume();
-        WindowManager.LayoutParams wmlp=getDialog().getWindow().getAttributes();
+        WindowManager.LayoutParams wmlp = getDialog().getWindow().getAttributes();
 
         Window window = getDialog().getWindow();
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, 600);
@@ -97,22 +111,19 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.cancel:
                 dismiss();
                 break;
-            case R.id.galley:
-            {
-               // SELECT_OPTION="gallery";
+            case R.id.galley: {
+                // SELECT_OPTION="gallery";
                 RunTimePermission.cameraPermission(getActivity());
                 someEventListener.someEvent("gallery");
 
                 dismiss();
             }
-                break;
-            case R.id.camera:
-            {
+            break;
+            case R.id.camera: {
                 //SELECT_OPTION="camera";
                 RunTimePermission.cameraPermission(getActivity());
                 someEventListener.someEvent("camera");
@@ -123,12 +134,6 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
 
         }
     }
-
-
-
-
-
-
 
 
 }

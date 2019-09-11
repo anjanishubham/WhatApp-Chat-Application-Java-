@@ -92,16 +92,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void verifyUserExistence() {
-        String  currentUserId=mAuth.getCurrentUser().getUid();
+        final String  currentUserId=mAuth.getCurrentUser().getUid();
         rootRef.child("Users").child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if((dataSnapshot.child("name").exists()))
                 {
-                    Toast.makeText(MainActivity.this, "welcome", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onDataChange: User exit");
+                   // Toast.makeText(MainActivity.this, "welcome", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    Log.d(TAG, "onDataChange: "+currentUserId);
                         sentUserToProfileSetting();
                     }
             }
@@ -197,8 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void sentUserToProfileSetting() {
         Intent intent=new Intent(this,SettingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
         startActivity(intent);
 
     }

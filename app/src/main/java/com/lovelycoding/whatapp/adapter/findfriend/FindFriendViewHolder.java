@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lovelycoding.whatapp.R;
@@ -15,7 +16,9 @@ public class FindFriendViewHolder extends RecyclerView.ViewHolder implements Vie
     private static final String TAG = "FindFriendViewHolder";
     private OnclickFindFriend mListener;
     TextView tvUserName,tvUserStatus;
-    CircleImageView civUserImage;
+   CircleImageView civUserImage;
+//    AppCompatImageView civUserImage;
+
     public FindFriendViewHolder(@NonNull View itemView,OnclickFindFriend mListener) {
         super(itemView);
         this.mListener=mListener;
@@ -28,7 +31,9 @@ public class FindFriendViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
+
         mListener.onClickToFindFriend(getAdapterPosition());
     }
 }

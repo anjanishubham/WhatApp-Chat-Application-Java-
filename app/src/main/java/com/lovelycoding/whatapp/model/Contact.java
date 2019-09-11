@@ -1,44 +1,89 @@
 package com.lovelycoding.whatapp.model;
 
-public class Contact {
-    String userName,userStatus,userProfileUrl;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Contact implements Parcelable {
+    String name, status, image, uid;
 
     public Contact() {
-        userName="";
-        userProfileUrl="";
-        userStatus="";
+        name ="";
+        image ="";
+        status ="";
+        uid ="";
     }
 
-    public String getUserName() {
-        return userName;
+    protected Contact(Parcel in) {
+        name = in.readString();
+        status = in.readString();
+        image = in.readString();
+        uid = in.readString();
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
+
+    public String getName() {
+        return name;
     }
 
-    public String getUserStatus() {
-        return userStatus;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setUserStatus(String userStatus) {
-        this.userStatus = userStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public String getUserProfileUrl() {
-        return userProfileUrl;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public void setUserProfileUrl(String userProfileUrl) {
-        this.userProfileUrl = userProfileUrl;
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Override
     public String toString() {
         return "Contact{" +
-                "userName='" + userName + '\'' +
-                ", userStatus='" + userStatus + '\'' +
-                ", userProfileUrl='" + userProfileUrl + '\'' +
+                "name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                ", image='" + image + '\'' +
+                ", uid='" + uid + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(status);
+        parcel.writeString(image);
+        parcel.writeString(uid);
     }
 }

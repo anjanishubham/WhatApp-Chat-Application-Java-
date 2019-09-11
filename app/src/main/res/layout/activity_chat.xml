@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.ChatActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/chat_activity_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iva_toolbar_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_white_24dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginLeft="16dp"
+            android:id="@+id/user_profile_image"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/profile_activity"/>
+        <TextView
+            android:id="@+id/user_name"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="Anjani \nToday 4 PM"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollview_chat_activity"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_message_input_chat_activity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_activity_toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_private_chat_activity"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_marginLeft="10dp"
+        android:id="@+id/et_message_input_chat_activity"
+        android:layout_width="0dp"
+        android:paddingLeft="20dp"
+        android:layout_height="54dp"
+        android:background="@drawable/inputs"
+        android:hint="  message ..."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_Send_message_chat_activity"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_Send_message_chat_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/colorAccent"
+        android:visibility="invisible"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@drawable/send_message"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_message_input_chat_activity">
+
+    </androidx.appcompat.widget.AppCompatImageButton>
+
+
+    <ProgressBar
+        android:id="@+id/progressbar_chat_activity"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminateDrawable="@drawable/progressbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
-package com.lovelycoding.whatapp.adapter.chat;
+package com.lovelycoding.whatapp.adapter.groupchat;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
