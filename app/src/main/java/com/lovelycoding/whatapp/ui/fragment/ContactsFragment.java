@@ -39,8 +39,9 @@ public class ContactsFragment extends Fragment implements OnclickFindFriend {
     private RecyclerView recyclerView;
     private List<Contact> mContactList = new ArrayList<>();
     private FindFriendRecycleAdapter mAdapter;
-
     private ProgressBar mProgressBar;
+
+    private boolean isContactListEmpty=false;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -83,11 +84,18 @@ public class ContactsFragment extends Fragment implements OnclickFindFriend {
             @Override
             public void onChanged(List<Contact> contacts) {
 
+                mContactList.clear();
+
                 if(contacts.size()!=0)
                 {
-                    mContactList.clear();
                     mContactList.addAll(contacts);
                     Log.d(TAG, "onChanged: "+mContactList);
+                    mProgressBar.setVisibility(View.GONE);
+                    isContactListEmpty=false;
+                }
+
+                if(!isContactListEmpty)
+                {
                     mProgressBar.setVisibility(View.GONE);
                 }
                 mAdapter.setContactList(mContactList);

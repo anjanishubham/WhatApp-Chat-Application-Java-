@@ -125,7 +125,8 @@ public class Repository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Log.d(TAG, "onDataChange: "+dataSnapshot.);
-
+               if(mContactList.size()>0)
+                mContactList.clear();
 
                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
 

@@ -64,6 +64,10 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$fireBaseVersion"
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
 
+// runtime permission
+    implementation 'com.karumi:dexter:5.0.0'
+// select multipe image form gallery
+
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

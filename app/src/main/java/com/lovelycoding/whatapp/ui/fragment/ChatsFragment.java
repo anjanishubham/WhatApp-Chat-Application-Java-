@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +50,7 @@ public class ChatsFragment extends Fragment {
     private DatabaseReference chatDatabaseRef,userDatabaseRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    public static boolean isChatEmpty=false;
 
 
     public ChatsFragment() {
@@ -77,6 +79,7 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onStart() {
+        mProgressBar.setVisibility(View.VISIBLE);
         super.onStart();
         FirebaseRecyclerOptions<Contact>  options=new FirebaseRecyclerOptions.Builder<Contact>()
                 .setQuery(chatDatabaseRef,Contact.class).build();
@@ -86,15 +89,6 @@ public class ChatsFragment extends Fragment {
             protected void onBindViewHolder(@NonNull final ChatViewHolder holder, int i, @NonNull Contact contact) {
 
                 final String userId= getRef(i).getKey();
-
-                if(userId.isEmpty() || userId==null)
-                {
-                    mProgressBar.setVisibility(View.GONE);
-                }
-                else {
-                    mProgressBar.setVisibility(View.VISIBLE);
-
-                }
                 userDatabaseRef.child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -103,11 +97,12 @@ public class ChatsFragment extends Fragment {
                         final Contact c=dataSnapshot.getValue(Contact.class);
                         if(c!=null)
                         {
+                            isChatEmpty=true;
                             emptyChat.setVisibility(View.GONE);
-                            holder.cardView.setVisibility(View.VISIBLE);
+                            holder.constraintLayout.setVisibility(View.VISIBLE);
                             Log.d(TAG, "getUser : "+c.toString());
                             holder.tvUsername.setText(c.getName());
-                            holder.tvUserStatus.setText("Last seen:");
+                            holder.tvUserStatus.setText(c.getLast_online_date()+" "+c.getLast_online_time());
 
                           //
                             //Glide.with(getContext()).load(c.getImage().placeholder(R.drawable.profile_image).into((holder).civProfileImage);
@@ -147,13 +142,18 @@ public class ChatsFragment extends Fragment {
 
         };
 
+        if(!isChatEmpty)
+        {
+            mProgressBar.setVisibility(View.GONE);
+            emptyChat.setVisibility(View.VISIBLE);
+        }
         chatFragmentRecycleView.setAdapter(adapter);
         adapter.startListening();
     }
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cardView;
+        ConstraintLayout constraintLayout;
         private CircleImageView civProfileImage;
         TextView tvUsername,tvUserStatus;
         public ChatViewHolder(@NonNull View itemView){
@@ -162,7 +162,7 @@ public class ChatsFragment extends Fragment {
             civProfileImage=itemView.findViewById(R.id.user_request_civ);
             tvUsername=itemView.findViewById(R.id.tv_user_request_user_name);
             tvUserStatus=itemView.findViewById(R.id.tv_user_request_user_status);
-            cardView=itemView.findViewById(R.id.cardView);
+            constraintLayout=itemView.findViewById(R.id.layout_constraint);
 
         }
     }

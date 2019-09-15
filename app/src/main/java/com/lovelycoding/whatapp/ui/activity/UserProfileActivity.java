@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lovelycoding.whatapp.R;
 import com.lovelycoding.whatapp.model.Contact;
+import com.lovelycoding.whatapp.model.Notification;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,11 +37,11 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     //val
     FirebaseAuth mAuth;
-    DatabaseReference contactDatabaseRef,userDatabaseRef,chatRequestDatabaseRef;
+    DatabaseReference contactDatabaseRef,userDatabaseRef,chatRequestDatabaseRef,notificationDatabaseRef;
     DatabaseReference receiveRequestDatabaseRef;
     private String SEND_REQUEST="request_sent";
     private String CANCEL_REQUEST="request_cancel";
-    private String EXCEPT_REQUEST="except_request";
+    private String EXCEPT_REQUEST="accept_request";
     private String FRIEND="friend";
 
     String sendRequestUserId, receiveRequestUserId;
@@ -57,6 +58,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         userDatabaseRef= FirebaseDatabase.getInstance().getReference().child("Users");
         chatRequestDatabaseRef= FirebaseDatabase.getInstance().getReference().child("chat request");
         contactDatabaseRef= FirebaseDatabase.getInstance().getReference().child("contacts");
+        notificationDatabaseRef= FirebaseDatabase.getInstance().getReference().child("Notification");
         sendRequestUserId = mAuth.getCurrentUser().getUid();
         receiveRequestUserId=userDetail.getUid();
 
@@ -129,17 +131,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 if (dataSnapshot.hasChild(receiveRequestUserId)) {
                     String requestType=dataSnapshot.child(receiveRequestUserId).child("request_type").getValue().toString();
                     if(requestType.equals("sent")){
-                        btSendMessageRequest.setText("Cancel Message Request");
+                        btSendMessageRequest.setText("remove contact");
                         btDeclineMessageRequest.setVisibility(View.INVISIBLE);
                         btDeclineMessageRequest.setEnabled(false);
                         currentState=CANCEL_REQUEST;
                     }
                     if(requestType.equals("receive"))
                     {
-                        btSendMessageRequest.setText("Except request");
-                        btDeclineMessageRequest.setEnabled(true);
-                        btDeclineMessageRequest.setVisibility(View.VISIBLE);
-                        currentState=EXCEPT_REQUEST;
+
 
                     }
                 }
@@ -150,7 +149,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
                            if(dataSnapshot.hasChild(receiveRequestUserId))
                            {
-                               btSendMessageRequest.setText("Remove contact");
+                               btSendMessageRequest.setText("remove contact");
                                btDeclineMessageRequest.setVisibility(View.INVISIBLE);
                                btDeclineMessageRequest.setEnabled(false);
                                currentState=FRIEND;
@@ -216,8 +215,16 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
+
+                                Notification notification=new Notification();
+                                String from,type;
+                                from=sendRequestUserId;
+                                type="request";
+                                notification.setFrom(from);
+                                notification.setType(type);
+                                notificationDatabaseRef.child(receiveRequestUserId).setValue(notification);
                                 currentState=CANCEL_REQUEST;
-                                btSendMessageRequest.setText("Cancel message request");
+                                btSendMessageRequest.setText("remove request");
                             }
                         }
                     });
@@ -243,7 +250,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                             {
                                 cancelChatRequest();
                                 currentState=FRIEND;
-                                btSendMessageRequest.setText("Remove contact");
+                                btSendMessageRequest.setText("remove contact");
                                 btDeclineMessageRequest.setVisibility(View.INVISIBLE);
                             }
                         }

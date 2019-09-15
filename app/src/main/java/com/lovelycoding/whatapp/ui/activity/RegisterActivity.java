@@ -19,7 +19,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.lovelycoding.whatapp.R;
+import com.lovelycoding.whatapp.model.Contact;
 import com.lovelycoding.whatapp.util.Util;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
@@ -82,11 +84,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
 
+                                        Contact contact=new Contact();
+
+
+
                                         String currentUserId=mAuth.getCurrentUser().getUid();
-                                        rootRef.child("Users").child(currentUserId).setValue("");
+                                        String deviceTOken= FirebaseInstanceId.getInstance().getToken();
+                                        contact.setUid(currentUserId);
+                                        contact.setDevice_token(deviceTOken);
+
+                                        rootRef.child("Users").child(currentUserId).setValue(contact);
                                         Toast.makeText(RegisterActivity.this, "Register sucessfully ", Toast.LENGTH_SHORT).show();
                                         mProgressBar.cancel();
-                                        sendUserToMainActivity();
+                                        sendUserToSettingActivity();
+
                                     } else {
                                         Toast.makeText(RegisterActivity.this, "Error::" + task.getException().toString(), Toast.LENGTH_SHORT).show();
                                         mProgressBar.cancel();
@@ -124,8 +135,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void sendUserToLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
         finishAffinity();
-    }private void sendUserToMainActivity() {
-        Intent intent=new Intent(this, MainActivity.class);
+    }
+
+    private void sendUserToSettingActivity() {
+        Intent intent=new Intent(this, SettingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

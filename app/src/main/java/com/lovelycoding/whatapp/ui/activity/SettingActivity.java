@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,6 +41,7 @@ import com.lovelycoding.whatapp.R;
 import com.lovelycoding.whatapp.model.Contact;
 import com.lovelycoding.whatapp.permission.RunTimePermission;
 import com.lovelycoding.whatapp.ui.fragment.MyDialogFragment;
+import com.lovelycoding.whatapp.util.Util;
 import com.lovelycoding.whatapp.viewmodel.SettingActivityViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -155,6 +157,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             contact.setName(userName);
             contact.setStatus(userStatus);
             contact.setImage(userProfileImageUrl);
+            contact.setLast_online_time(Util.getCurrentTime());
+            contact.setLast_online_date(Util.getCurrentDate());
+            contact.setDevice_token(FirebaseInstanceId.getInstance().getToken());
+            contact.setLogin_state("online");
             rootRef.child("Users").child(currentUserId).setValue(contact);
             sentUserToMainActivity();
 

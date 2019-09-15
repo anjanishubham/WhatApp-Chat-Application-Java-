@@ -21,9 +21,11 @@ public class MessageAdapter extends RecyclerView.Adapter
 {
     private static final String TAG = "MessageAdapter";
     List<PrivateChatMessage> messageList ;
+    OnClickFlieSharing mClickListener;
 
-    public MessageAdapter() {
+    public MessageAdapter(OnClickFlieSharing mClickListener) {
         messageList=new ArrayList<>();
+        this.mClickListener=mClickListener;
     }
 
     FirebaseAuth mAuth;
@@ -33,7 +35,7 @@ public class MessageAdapter extends RecyclerView.Adapter
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mAuth=FirebaseAuth.getInstance();
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_custom_chat_activity_rv_list_item,parent,false);
-        return new MessageViewHolder(view);
+        return new MessageViewHolder(view,mClickListener);
     }
 
     @Override

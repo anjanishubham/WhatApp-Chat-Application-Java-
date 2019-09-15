@@ -16,7 +16,7 @@ public class FindFriendViewHolder extends RecyclerView.ViewHolder implements Vie
     private static final String TAG = "FindFriendViewHolder";
     private OnclickFindFriend mListener;
     TextView tvUserName,tvUserStatus;
-   CircleImageView civUserImage;
+   CircleImageView civUserImage,civUserOnline;
 //    AppCompatImageView civUserImage;
 
     public FindFriendViewHolder(@NonNull View itemView,OnclickFindFriend mListener) {
@@ -25,6 +25,7 @@ public class FindFriendViewHolder extends RecyclerView.ViewHolder implements Vie
         tvUserName = itemView.findViewById(R.id.tv_user_layout_user_name);
         tvUserStatus = itemView.findViewById(R.id.tv_user_layout_user_status);
         civUserImage=itemView.findViewById(R.id.user_layout_civ);
+        civUserOnline=itemView.findViewById(R.id.civ_find_friend_is_user_online);
         Log.d(TAG, "FindFriendViewHolder: View is created");
         itemView.setOnClickListener(this);
 

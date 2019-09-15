@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingTop="30dp"
+    android:paddingBottom="30dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+
 
     >
 
@@ -25,9 +28,20 @@
         android:layout_height="70dp"
         android:padding="5dp"
         android:src="@drawable/ic_wallpaper_black_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/file_shared_document"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/file_shared_camera"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/file_shared_document"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="5dp"
+        android:src="@drawable/document"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/file_shared_galley"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -35,32 +49,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Camera"
-        app:layout_constraintEnd_toStartOf="@+id/galley_label"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/file_shared_camera" />
+        app:layout_constraintStart_toStartOf="@id/file_shared_camera"
+        app:layout_constraintTop_toBottomOf="@id/file_shared_camera"
+        app:layout_constraintEnd_toEndOf="@+id/file_shared_camera"
+        />
 
     <TextView
         android:id="@+id/galley_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gallery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/camera_label"
-        app:layout_constraintTop_toBottomOf="@id/file_shared_galley" />
+        app:layout_constraintStart_toStartOf="@+id/file_shared_galley"
+        app:layout_constraintTop_toBottomOf="@id/file_shared_galley"
+        app:layout_constraintEnd_toEndOf="@+id/file_shared_galley"
+        />
 
     <TextView
-        android:id="@+id/cancel"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
+        android:id="@+id/document_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/camera_label"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="CANCEL"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"/>
+        android:gravity="center"
+        android:text="Gallery"
+        app:layout_constraintStart_toStartOf="@+id/file_shared_document"
+        app:layout_constraintTop_toBottomOf="@id/file_shared_document"
+        app:layout_constraintEnd_toEndOf="@id/file_shared_document"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

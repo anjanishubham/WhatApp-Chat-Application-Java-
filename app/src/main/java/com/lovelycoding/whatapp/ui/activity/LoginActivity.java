@@ -22,6 +22,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.lovelycoding.whatapp.R;
 import com.lovelycoding.whatapp.util.Util;
 
@@ -36,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputLayout tilUserEmail,tilUserPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog mProgressBar;
+    private DatabaseReference userDatabaseRef;
 
 ////    SharedPreferences sp=getSharedPreferences("Login", 0);
     @Override
@@ -43,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth=FirebaseAuth.getInstance();
+        userDatabaseRef= FirebaseDatabase.getInstance().getReference().child("Users");
         initView();
 
         checkUserLoginFirstTime();
@@ -75,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void sendUserToMainActivity() {
 
+        MainActivity.isTest=false;
         startActivity(new Intent(this,MainActivity.class));
         finishAffinity();
     }
@@ -107,7 +113,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                            {
                                mProgressBar.cancel();
                                Log.d(TAG, "onComplete:LoginSuccessful "+task.toString());
-                               sentUserToMainActivity();
+
+                               String device_token,currentUserId;
+                               currentUserId=mAuth.getCurrentUser().getUid();
+                               device_token= FirebaseInstanceId.getInstance().getToken();
+                               Log.d(TAG, "onComplete:device_token "+device_token);
+                               userDatabaseRef.child(currentUserId).child("device_token").setValue(device_token).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<Void> task) {
+                                       sentUserToMainActivity();
+                                   }
+                               });
+
+
 
                            }
                            else {

@@ -38,6 +38,25 @@ public class Util {
         return date;
     }
 
+    public static String getCurrentDataStamp() {
+
+        return String.valueOf(System.currentTimeMillis());
+    }
+
+    public static String getCurrentDate() {
+        SimpleDateFormat dateFormat1= new SimpleDateFormat("dd/MM/yyyy");
+        Date da = new Date();
+        return dateFormat1.format(da);
+
+    }
+
+    public static String getCurrentTime() {
+
+        SimpleDateFormat timeFormat= new SimpleDateFormat("hh:mm a");
+        Date da = new Date();
+        return timeFormat.format(da);
+    }
+
 
 
 }

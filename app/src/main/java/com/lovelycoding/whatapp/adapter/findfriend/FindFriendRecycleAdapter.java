@@ -43,6 +43,9 @@ public class FindFriendRecycleAdapter extends RecyclerView.Adapter {
         ((FindFriendViewHolder) holder).tvUserStatus.setText(mContactList.get(position).getStatus());
         ((FindFriendViewHolder) holder).tvUserName.setText(mContactList.get(position).getName());
 
+        if(mContactList.get(position).getLogin_state().equals("online"))
+            ((FindFriendViewHolder) holder).civUserOnline.setVisibility(View.VISIBLE);
+
         // String child_url = "https://www.michaelkormos.com/wp-content/uploads/2019/02/12-7126-pp_gallery/boy-crawling-in-grass-1024x741.jpg";
         if (!mContactList.get(position).getImage().isEmpty())
             Picasso.with(context.getApplicationContext())

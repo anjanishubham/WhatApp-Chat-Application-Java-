@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,13 +22,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.lovelycoding.whatapp.R;
 
 import java.util.concurrent.TimeUnit;
 
 public class PhoneLoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-
+    private static final String TAG = "PhoneLoginActivity";
     private AppCompatEditText etPhoneNumber,etVerificationCode;
     private AppCompatButton btLogin,btVerifyPassword;
     private TextInputLayout tilPhoneNumber,tilVerificationcode;
@@ -36,6 +40,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
     //val
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     private FirebaseAuth mAuth;
+    private DatabaseReference userDatabaseRef;
     private ProgressDialog loadingBar;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -48,6 +53,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         initView();
         loadingBar = new ProgressDialog(this);
         mAuth=FirebaseAuth.getInstance();
+        userDatabaseRef= FirebaseDatabase.getInstance().getReference().child("Users");
         btLogin.setOnClickListener(this);
         btVerifyPassword.setOnClickListener(this);
     }
@@ -160,8 +166,17 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
                         if (task.isSuccessful())
                         {
                             loadingBar.dismiss();
-                            Toast.makeText(PhoneLoginActivity.this, "Congratulations, you're logged in Successfully.", Toast.LENGTH_SHORT).show();
-                            SendUserToMainActivity();
+                           // Toast.makeText(PhoneLoginActivity.this, "Congratulations, you're logged in Successfully.", Toast.LENGTH_SHORT).show();
+                            String device_token,currentUserId;
+                            currentUserId=mAuth.getCurrentUser().getUid();
+                            device_token= FirebaseInstanceId.getInstance().getToken();
+                            Log.d(TAG, "onComplete:device_token "+device_token);
+                            userDatabaseRef.child(currentUserId).child("device_token").setValue(device_token).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    SendUserToMainActivity();
+                                }
+                            });
                         }
                         else
                         {
