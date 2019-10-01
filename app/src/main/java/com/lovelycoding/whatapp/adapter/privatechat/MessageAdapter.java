@@ -1,5 +1,7 @@
 package com.lovelycoding.whatapp.adapter.privatechat;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +10,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.lovelycoding.whatapp.R;
+import com.lovelycoding.whatapp.adapter.findfriend.FindFriendViewHolder;
 import com.lovelycoding.whatapp.model.PrivateChatMessage;
 import com.lovelycoding.whatapp.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MessageAdapter extends RecyclerView.Adapter
@@ -76,4 +85,6 @@ public class MessageAdapter extends RecyclerView.Adapter
          return messageList.size();
         else return 0;
     }
+
+
 }

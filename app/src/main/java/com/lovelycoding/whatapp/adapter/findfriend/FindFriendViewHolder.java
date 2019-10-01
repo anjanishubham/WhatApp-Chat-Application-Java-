@@ -1,5 +1,8 @@
 package com.lovelycoding.whatapp.adapter.findfriend;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +12,11 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lovelycoding.whatapp.R;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,4 +45,6 @@ public class FindFriendViewHolder extends RecyclerView.ViewHolder implements Vie
 
         mListener.onClickToFindFriend(getAdapterPosition());
     }
+
+
 }

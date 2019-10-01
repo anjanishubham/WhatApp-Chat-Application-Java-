@@ -2,6 +2,8 @@ package com.lovelycoding.whatapp.ui.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,16 +25,24 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.lovelycoding.whatapp.R;
+import com.lovelycoding.whatapp.adapter.findfriend.FindFriendViewHolder;
 import com.lovelycoding.whatapp.model.Contact;
 import com.lovelycoding.whatapp.ui.activity.ChatActivity;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,6 +61,7 @@ public class ChatsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String currentUserId;
     public static boolean isChatEmpty=false;
+    Map<String, Bitmap> bitMap = new HashMap<>();
 
 
     public ChatsFragment() {
@@ -104,7 +115,14 @@ public class ChatsFragment extends Fragment {
                             holder.tvUsername.setText(c.getName());
                             holder.tvUserStatus.setText(c.getLast_online_date()+" "+c.getLast_online_time());
 
-                          //
+                            if(bitMap.containsKey(c.getUid())) {
+                                holder.civProfileImage.setImageBitmap(bitMap.get(c.getUid()));
+                            }
+                            else
+                                downloadProfileImage(holder, c.getUid());
+
+
+                            //
                             //Glide.with(getContext()).load(c.getImage().placeholder(R.drawable.profile_image).into((holder).civProfileImage);
                             //Glide.with(getContext().getApplicationContext()).load(c.getImage()).apply(RequestOptions.circleCropTransform()).into(holder.civProfileImage);
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +183,29 @@ public class ChatsFragment extends Fragment {
             constraintLayout=itemView.findViewById(R.id.layout_constraint);
 
         }
+    }
+
+    public void downloadProfileImage(final ChatViewHolder holder, final String fileName)
+    {
+        final long ONE_MEGABYTE = 1024 * 1024;
+        StorageReference reference= FirebaseStorage.getInstance().getReference().child("Profile Image");
+        Log.d(TAG, "downloadProfileImage: "+fileName+".PNG");
+        Log.d(TAG, "downloadProfileImage: "+reference);
+        reference.child(fileName+".PNG").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                holder.civProfileImage.setImageBitmap(bitmap);
+                bitMap.put(fileName,bitmap);
+                Log.d(TAG, "onPostExecute: "+bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
     }
 
 }
