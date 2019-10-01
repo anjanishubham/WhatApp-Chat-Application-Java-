@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lovelycoding.whatapp.R;
-import com.lovelycoding.whatapp.adapter.chat.MassageListAdapter;
+import com.lovelycoding.whatapp.adapter.groupchat.MassageListAdapter;
 import com.lovelycoding.whatapp.model.GroupChatModel;
 import com.lovelycoding.whatapp.repository.Repository;
 
@@ -159,16 +159,16 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initView() {
-        recyclerView=findViewById(R.id.group_chat_rv);
-        etGroupChatMassage=findViewById(R.id.et_massage);
-        btGroupChatSend=findViewById(R.id.bt_Send_message);
-        mScroll=findViewById(R.id.scrollview);
+        recyclerView=findViewById(R.id.rv_private_chat_activity);
+        etGroupChatMassage=findViewById(R.id.et_message_input_chat_activity);
+        btGroupChatSend=findViewById(R.id.bt_Send_message_chat_activity);
+        mScroll=findViewById(R.id.scrollview_chat_activity);
 
     }
 
     private void initToolbar()
     {
-        toolbar=findViewById(R.id.group_chat_toolbar);
+        toolbar=findViewById(R.id.chat_activity_toolbar);
         if(getIntent().hasExtra("currentGroupName"))
         {
             currentGroupName=getIntent().getStringExtra("currentGroupName");
@@ -190,7 +190,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
 
         switch (view.getId()){
-            case R.id.bt_Send_message:
+            case R.id.bt_Send_message_chat_activity:
             {
                 saveMessageToDatabase();
                 etGroupChatMassage.setText("");

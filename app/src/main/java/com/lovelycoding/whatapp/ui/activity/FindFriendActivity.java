@@ -8,15 +8,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.lovelycoding.whatapp.R;
 import com.lovelycoding.whatapp.adapter.findfriend.FindFriendRecycleAdapter;
 import com.lovelycoding.whatapp.adapter.findfriend.OnclickFindFriend;
@@ -35,28 +34,30 @@ public class FindFriendActivity extends AppCompatActivity implements OnclickFind
     //val
     private  List<Contact> mContactList=new ArrayList<>();
     private FindFriendRecycleAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friend);
         mViewModel= ViewModelProviders.of(this).get(ContactActivtyViewModel.class);
-        mAdapter=new FindFriendRecycleAdapter();
-        initObserver();
+        mAdapter=new FindFriendRecycleAdapter(this);
         initView();
         initToolbar();
+        initObserver();
+
         initReycleView();
     }
 
     private void initToolbar() {
-        setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setTitle("Contact");
+        toolbar.setTitle("Contact List");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Log.d(TAG, "onClick: finish activity !!");
+               finish();
             }
         });
     }
@@ -69,6 +70,7 @@ public class FindFriendActivity extends AppCompatActivity implements OnclickFind
     }
 
     private void initObserver() {
+        mProgressBar.setVisibility(View.VISIBLE);
         mViewModel.getUserList().observe(this, new Observer<List<Contact>>() {
             @Override
             public void onChanged(List<Contact> contacts) {
@@ -78,9 +80,11 @@ public class FindFriendActivity extends AppCompatActivity implements OnclickFind
 
                     mContactList.clear();
                     mContactList.addAll(contacts);
+                    mAdapter.setContactList(contacts);
+                    mAdapter.notifyDataSetChanged();
+                    mProgressBar.setVisibility(View.GONE);
+
                 }
-                mAdapter.setContactList(contacts);
-                mAdapter.notifyDataSetChanged();
 
             }
 
@@ -91,12 +95,19 @@ public class FindFriendActivity extends AppCompatActivity implements OnclickFind
     private void initView() {
         toolbar=findViewById(R.id.find_friend_toolbar);
         recyclerView=findViewById(R.id.friend_actionbar_recycle_view);
+        mProgressBar=findViewById(R.id.progressbar_find_contact_activity);
 
     }
 
     @Override
     public void onClickToFindFriend(int position) {
 
-        Toast.makeText(this, "Hot start ", Toast.LENGTH_SHORT).show();
+        sentToUserProfileActivity(mContactList.get(position));
+    }
+
+    private void sentToUserProfileActivity(Contact contact) {
+        Intent userProfileIntent=new Intent(this,UserProfileActivity.class);
+        userProfileIntent.putExtra("userProfile",contact);
+        startActivity(userProfileIntent);
     }
 }

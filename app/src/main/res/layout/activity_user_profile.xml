@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.UserProfileActivity">
+
+    <include
+        layout="@layout/app_bar_layout"
+        android:id="@+id/user_profile_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/profile_activity"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_toolbar" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/civ_user_profile_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/profile_activity"
+        />
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:hint="djlakjflajlfalfjlajflkjal"
+        app:layout_constraintTop_toBottomOf="@+id/civ_user_profile_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/tv_user_status"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="alsjflajflajlfjaljfal"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_send_message_request"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/inputs"
+        android:padding="10dp"
+        android:text="Send message request"
+        android:textAllCaps="false"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:visibility="invisible"
+        android:id="@+id/bt_decline_message_request"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/bt_send_message_request"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/inputs"
+        android:padding="10dp"
+        android:text="Decline request"
+        android:textAllCaps="false"
+        />
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lovelycoding.whatapp.R;
 import com.lovelycoding.whatapp.adapter.TabAcessorAdapter;
+import com.lovelycoding.whatapp.model.Contact;
+import com.lovelycoding.whatapp.util.Util;
 import com.lovelycoding.whatapp.viewmodel.GroupViewModel;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
    public static GroupViewModel mGroupViewModel;
+   public String  currentUserId;
+   public static boolean isTest=false;
+
 
 
     @Override
@@ -55,8 +62,10 @@ public class MainActivity extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         currentUser=mAuth.getCurrentUser();
         rootRef=FirebaseDatabase.getInstance().getReference();
-        if(currentUser!=null)
-        Log.d(TAG, "onCreate: CurrentUser"+currentUser.getDisplayName()+currentUser.getEmail());
+        if(currentUser==null)
+            sendUserToLoginActivity();
+
+//        Log.d(TAG, "onCreate: CurrentUser"+currentUser.getDisplayName()+currentUser.getEmail());
         initToolbar();
         initViewPage();
 
@@ -82,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: called ");
+        currentUserId=mAuth.getCurrentUser().getUid();
         if(currentUser==null)
         {
             sendUserToLoginActivity();
@@ -92,26 +103,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void verifyUserExistence() {
-        String  currentUserId=mAuth.getCurrentUser().getUid();
-        rootRef.child("Users").child(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if((dataSnapshot.child("name").exists()))
-                {
-                    Toast.makeText(MainActivity.this, "welcome", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                        sentUserToProfileSetting();
-                    }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        if(rootRef.child("Users").child(currentUserId)!=null)
+        {
+            updateUserStatus("online");
+        }
 
-            }
-        });
     }
+
+
+
+
+    private void updateUserStatus(final String state) {
+        if(currentUserId!= null) {
+            try {
+                rootRef.child("Users").child(currentUserId).child("last_online_time").setValue(Util.getCurrentTime());
+                rootRef.child("Users").child(currentUserId).child("last_online_date").setValue(Util.getCurrentDate());
+                rootRef.child("Users").child(currentUserId).child("login_state").setValue(state);
+            }catch (NullPointerException e)
+            {
+                Log.d(TAG, "updateUserStatus: "+e.getLocalizedMessage());
+            }
+        }
+}
 
     private void sendUserToLoginActivity() {
 
@@ -133,9 +148,13 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.main_logout_option: {
+
+
                 mAuth.signOut();
+                isTest=false;
+                updateUserStatus("offline");
                 sendUserToLoginActivity();
-                return true;
+                return false;
             }
             case R.id.main_setting_option:{
                 sentUserToProfileSetting();
@@ -197,8 +216,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void sentUserToProfileSetting() {
         Intent intent=new Intent(this,SettingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
         startActivity(intent);
 
     }
@@ -207,4 +224,28 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        updateUserStatus("offline");
+        Log.d(TAG, "onPause is called: ");
+    }
+
+    @Override
+    protected void onStop() {
+        updateUserStatus("offline");
+        super.onStop();
+        Log.d(TAG, "onStop: onStop callsed");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        updateUserStatus("offline");
+
+
+        Log.d(TAG, "onDestroy is called : ");
+    }
 }

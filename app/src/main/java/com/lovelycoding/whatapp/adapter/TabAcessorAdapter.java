@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.lovelycoding.whatapp.ui.fragment.ChatsFragment;
 import com.lovelycoding.whatapp.ui.fragment.ContactsFragment;
 import com.lovelycoding.whatapp.ui.fragment.GroupsFragment;
+import com.lovelycoding.whatapp.ui.fragment.RequestFragment;
 
 public class TabAcessorAdapter extends FragmentPagerAdapter {
     public TabAcessorAdapter(FragmentManager fm) {
@@ -18,22 +19,26 @@ public class TabAcessorAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                ChatsFragment chatsFragment=new ChatsFragment();
+                ChatsFragment chatsFragment = new ChatsFragment();
                 return chatsFragment;
             case 1:
-                GroupsFragment groupsFragment=new GroupsFragment();
+                GroupsFragment groupsFragment = new GroupsFragment();
                 return groupsFragment;
             case 2:
-                ContactsFragment contactsFragment=new ContactsFragment();
+                ContactsFragment contactsFragment = new ContactsFragment();
                 return contactsFragment;
-                default:
-                    return null;
+
+            case 3:
+                RequestFragment requestFragment = new RequestFragment();
+                return requestFragment;
+            default:
+                return null;
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Nullable
@@ -41,11 +46,13 @@ public class TabAcessorAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-               return "Chats";
+                return "Chats";
             case 1:
                 return "Groups";
             case 2:
                 return "Contacts";
+            case 3:
+                return "Request";
             default:
                 return null;
         }

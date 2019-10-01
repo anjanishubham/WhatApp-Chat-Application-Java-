@@ -10,7 +10,7 @@ public class GroupChatModel {
                 "userMassage='" + userMassage + '\'' +
                 ", messageDate='" + messageDate + '\'' +
                 ", messageTime='" + messageTime + '\'' +
-                ", userName='" + userName + '\'' +
+                ", name='" + userName + '\'' +
                 '}';
     }
 
